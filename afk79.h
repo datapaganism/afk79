@@ -1,5 +1,4 @@
-#ifndef AFK79_H
-#define AFK79_H
+#pragma once
 
 #include "quantum.h"
 
@@ -18,5 +17,3 @@
 	{ KC_NO, K401,  K402,  K403,  K404,  K405,  K406,  K407,  K408,  K409,  K410,  K411,  K412,  K413,  K414 }, \
 	{ K500,  K501,  KC_NO, K503,  KC_NO, KC_NO, K506,  KC_NO, KC_NO, KC_NO, K510,  K511,  K512,  K513,  K514 }  \
 }
-
-#endif
