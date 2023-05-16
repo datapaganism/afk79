@@ -8,6 +8,8 @@
 * Hardware Supported: STM32F401 Black Pill
 * Hardware Availability: Handwire only atm
 
+FOR QMK 0.20.8
+
 Make example for this keyboard (after setting up your build environment):
 
     make afk79:default
