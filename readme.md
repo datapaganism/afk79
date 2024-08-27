@@ -8,8 +8,6 @@
 * Hardware Supported: STM32F401 Black Pill
 * Hardware Availability: Handwire only atm
 
-FOR QMK 0.20.8
-
 Make example for this keyboard (after setting up your build environment):
 
     make afk79:default
@@ -27,8 +25,3 @@ Enter the bootloader in 3 ways:
 * **Bootmagic reset**: Hold down the key at (0,0) in the matrix (usually the top left key or Escape) and plug in the keyboard
 * **Physical reset button**: Briefly press the button on the back of the PCB - some may have pads you must short instead
 * **Keycode in layout**: Press the key mapped to `QK_BOOT` if it is available
-
-
-Features include:
-
-Page Up/Down and Home/End are accessible using the cursor keys while FUNC is held. Media Keys are accessible using FUNC and F row Alt Code support; hold AltGr and use the number row to type alt codes; no need for numpad. FUNC + 4 = £, sends an alt code macro, £ is now OS language independent. FUNC + ESC = RESET for flashing.
