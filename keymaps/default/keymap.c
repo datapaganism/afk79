@@ -1,7 +1,6 @@
 // Copyright 2023 QMK
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include "afk79.h"
 #include QMK_KEYBOARD_H
 
 enum layers {
@@ -14,29 +13,50 @@ enum custom_keycodes {
 	UKPND = SAFE_RANGE,
 };
 
+void matrix_init_user(void) {
+    if (!host_keyboard_led_state().num_lock) {
+        tap_code(KC_NUM);
+    }
+}
+
+bool led_update_kb(led_t led_state) {
+    bool res = led_update_user(led_state);
+    if(res) {
+        // gpio_write_pin sets the pin high for 1 and low for 0.
+        // In this example the pins are inverted, setting
+        // it low/0 turns it on, and high/1 turns the LED off.
+        // This behavior depends on whether the LED is between the pin
+        // and VCC or the pin and GND.
+        gpio_write_pin(C13, !led_state.num_lock);
+        gpio_write_pin(C13, !led_state.caps_lock);
+        gpio_write_pin(C13, !led_state.scroll_lock);
+    }
+    return res;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch(keycode)
 	{
 		case UKPND:
 			if (record->event.pressed)
-				SEND_STRING(SS_RALT(SS_TAP(X_KP_0) SS_TAP(X_KP_1) SS_TAP(X_KP_6) SS_TAP(X_KP_3)));
-			else;
+            {
+                if (!host_keyboard_led_state().num_lock)
+                {
+                    tap_code(KC_NUM);
+                }
+				SEND_STRING( SS_DOWN(X_RALT) SS_DELAY(100) SS_TAP(X_KP_0) SS_TAP(X_KP_1) SS_TAP(X_KP_6) SS_TAP(X_KP_3) SS_UP(X_RALT));
+            }
+			else
+            {
+
+            }
 		break;
 	}
 	return true;
 }
 
-
-void matrix_init_user(void) {
-    if (!(host_keyboard_leds() & (1 << USB_LED_NUM_LOCK))) {
-        register_code(KC_NUM_LOCK);
-        unregister_code(KC_NUM_LOCK);
-    }
-}
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-	/*
+/*
 	 * ,--------------------------------------------------------------------------------------------------------.
 	 * |  ESC |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 | Prnt |  Del |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
@@ -50,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * | CTRL |  GUI |  ALT |                                                | ALTR | CTRL | LEFT | DOWN | RGHT |
 	 * `--------------------------------------------------------------------------------------------------------'
-	 */
+*/
 	[_QWERTY] = LAYOUT(
 		KC_ESC, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_PSCR, KC_DEL, 
 		KC_GRV,  KC_1, KC_2,  KC_3,  KC_4,  KC_5,  KC_6,  KC_7,  KC_8,  KC_9,  KC_0,  KC_MINS, KC_EQL,     KC_BSPC, 
@@ -65,13 +85,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_TRNS, 
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
+		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_RALT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS),
 
 	/*
 	 * ,--------------------------------------------------------------------------------------------------------.
 	 * | RSET |      |      |      |      |      |      |      |      |      |      |      |      | NUML | INS  |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
-	 * |      |      |      |      |   £  |      |      |      |      |      |      |      |      |      |      |
+	 * |      |      |      |   £  |   £  |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * |             |      |      |      |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
@@ -84,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	 */
 	[_FUNC] = LAYOUT(
 		QK_BOOT, KC_MUTE, KC_VOLD, KC_VOLU, KC_TRNS, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_BRID, KC_BRIU, KC_TRNS, KC_TRNS, KC_NUM, KC_INS, 
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, UKPND , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+		KC_TRNS, KC_TRNS, KC_TRNS, UKPND, UKPND , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_TRNS, 
