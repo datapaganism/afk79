@@ -4,6 +4,8 @@
 
 *A short description of the keyboard/project*
 
+QMK Supported: 0.25.17
+
 * Keyboard Maintainer: [datapaganism](https://github.com/datapaganism)
 * Hardware Supported: STM32F401 Black Pill
 * Hardware Availability: Handwire only atm
