@@ -7,7 +7,7 @@
 QMK Supported: 0.25.17
 
 * Keyboard Maintainer: [datapaganism](https://github.com/datapaganism)
-* Hardware Supported: STM32F401 Black Pill
+* Hardware Supported: STM32F401 Black Pill (with 22K resistor between A10 and 3.3V)
 * Hardware Availability: Handwire only atm
 
 Make example for this keyboard (after setting up your build environment):
