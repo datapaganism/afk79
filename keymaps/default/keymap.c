@@ -27,9 +27,9 @@ bool led_update_kb(led_t led_state) {
         // it low/0 turns it on, and high/1 turns the LED off.
         // This behavior depends on whether the LED is between the pin
         // and VCC or the pin and GND.
-        gpio_write_pin(C13, !led_state.num_lock);
+		// gpio_write_pin(C13, !led_state.num_lock);
+        // gpio_write_pin(C13, !led_state.scroll_lock);
         gpio_write_pin(C13, !led_state.caps_lock);
-        gpio_write_pin(C13, !led_state.scroll_lock);
     }
     return res;
 }
