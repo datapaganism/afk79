@@ -93,7 +93,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * |      |      |      |   £  |   £  |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
-	 * |             |      |      |      |      |      |      |      |      |      |      |      |      |      |
+	 * |     MAKE    |      |      |      |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * |             |      |      |      |      |      |      |      |      |      |      |      |             |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_FUNC] = LAYOUT(
 		QK_BOOT, KC_MUTE, KC_VOLD, KC_VOLU, KC_TRNS, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_BRID, KC_BRIU, KC_TRNS, KC_TRNS, KC_NUM, KC_INS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, UKPND, UKPND , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+		QK_MAKE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_END)
