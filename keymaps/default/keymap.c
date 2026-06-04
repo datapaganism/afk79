@@ -3,6 +3,8 @@
 
 #include QMK_KEYBOARD_H
 
+#define SS_LCS_U SS_LCTL(SS_LSFT("u"))
+
 enum layers {
   _QWERTY = 0,
   _NUMPAD,
@@ -10,7 +12,8 @@ enum layers {
 };
 
 enum custom_keycodes {
-	UKPND = SAFE_RANGE,
+	UKPND_ALTCODE = SAFE_RANGE,
+	UKPND_UNICODE,
 };
 
 void matrix_init_user(void) {
@@ -27,9 +30,9 @@ bool led_update_kb(led_t led_state) {
         // it low/0 turns it on, and high/1 turns the LED off.
         // This behavior depends on whether the LED is between the pin
         // and VCC or the pin and GND.
-        gpio_write_pin(C13, !led_state.num_lock);
-        gpio_write_pin(C13, !led_state.caps_lock);
-        gpio_write_pin(C13, !led_state.scroll_lock);
+		// gpio_write_pin(C13, !led_state.num_lock);
+        // gpio_write_pin(C13, !led_state.scroll_lock);
+		gpio_write_pin(C13, !led_state.caps_lock);
     }
     return res;
 }
@@ -37,20 +40,26 @@ bool led_update_kb(led_t led_state) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	switch(keycode)
 	{
-		case UKPND:
+		case UKPND_ALTCODE:
+		{
 			if (record->event.pressed)
             {
                 if (!host_keyboard_led_state().num_lock)
                 {
                     tap_code(KC_NUM);
                 }
-				SEND_STRING( SS_DOWN(X_RALT) SS_DELAY(100) SS_TAP(X_KP_0) SS_TAP(X_KP_1) SS_TAP(X_KP_6) SS_TAP(X_KP_3) SS_UP(X_RALT));
-            }
-			else
-            {
-
+				SEND_STRING( SS_DOWN(X_RALT) SS_DELAY(10) SS_TAP(X_KP_0) SS_TAP(X_KP_1) SS_TAP(X_KP_6) SS_TAP(X_KP_3) SS_UP(X_RALT) );
             }
 		break;
+		}
+		case UKPND_UNICODE:
+		{
+			if (record->event.pressed)
+            {
+				SEND_STRING( SS_LCS_U SS_TAP(X_0) SS_TAP(X_0) SS_TAP(X_A) SS_TAP(X_3) SS_TAP(X_ENT)  );
+			}
+		break;
+		}
 	}
 	return true;
 }
@@ -89,11 +98,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	/*
 	 * ,--------------------------------------------------------------------------------------------------------.
-	 * | RSET |      |      |      |      |      |      |      |      |      |      |      |      | NUML | INS  |
+	 * | RSET | MUTE | VOL+ | VOL- |      | STOP | PREV | PLAY | NEXT | BRI- | BRI+ |      |      | NUML | INS  |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * |      |      |      |   £  |   £  |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
-	 * |             |      |      |      |      |      |      |      |      |      |      |      |      |      |
+	 * |     MAKE    |      |      |      |      |      |      |      |      |      |      |      |      |      |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
 	 * |             |      |      |      |      |      |      |      |      |      |      |      |             |
 	 * |------+------+------+------+------+------+------+------+------+------+------+------+------+------+------+
@@ -104,8 +113,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	 */
 	[_FUNC] = LAYOUT(
 		QK_BOOT, KC_MUTE, KC_VOLD, KC_VOLU, KC_TRNS, KC_MSTP, KC_MPRV, KC_MPLY, KC_MNXT, KC_BRID, KC_BRIU, KC_TRNS, KC_TRNS, KC_NUM, KC_INS, 
-		KC_TRNS, KC_TRNS, KC_TRNS, UKPND, UKPND , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+		KC_TRNS, KC_TRNS, KC_TRNS, UKPND_ALTCODE, UKPND_UNICODE , KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+		QK_MAKE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_PGUP, KC_TRNS, 
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_HOME, KC_PGDN, KC_END)
