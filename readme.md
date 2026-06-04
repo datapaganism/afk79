@@ -1,22 +1,24 @@
 # afk79
 
-![afk79](imgur.com image replace me!)
+![afk79](pics/afk79.jpg)
 
-*A short description of the keyboard/project*
-
-QMK Supported: 0.25.17
+QMK Supported: 0.33.0
 
 * Keyboard Maintainer: [datapaganism](https://github.com/datapaganism)
 * Hardware Supported: STM32F401 Black Pill (with 22K resistor between A10 and 3.3V)
 * Hardware Availability: Handwire only atm
 
-Make example for this keyboard (after setting up your build environment):
+Clone into `qmk_firmware/keyboards`
 
-    make afk79:default
+Make example for this keyboard (after setting up your build environment):
+```
+   qmk compile -kb afk79 -km default
+```
 
 Flashing example for this keyboard:
-
-    make afk79:default:flash
+```
+   qmk flash -kb afk79 -km default
+```
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
 
